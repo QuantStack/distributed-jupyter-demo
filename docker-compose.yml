@@ -1,0 +1,18 @@
+services:
+  servera:
+    build: .
+    container_name: jlab-serverA
+    ports:
+      - '8888:8888'
+    volumes:
+      - ./jupyter_serverA_config.py:/etc/jupyter/jupyter_server_config.py
+    command: ["jupyter", "server", "--no-browser", "--config=/etc/jupyter/jupyter_server_config.py"]
+
+  serverb:
+    build: .
+    container_name: jlab-serverB
+    ports:
+      - '8889:8889'
+    volumes:
+      - ./jupyter_serverB_config.py:/etc/jupyter/jupyter_server_config.py
+    command: ["jupyter", "lab", "--no-browser", "--config=/etc/jupyter/jupyter_server_config.py"]
