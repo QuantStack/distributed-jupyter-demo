@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.3.8
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: meriembenismail867@gmail.com
+author_name: distributed-jupyter-demo
+has_binder: false
+has_settings: false
+kind: frontend
+labextension_name: distributed-jupyter-demo
+project_short_description: A JupyterLab extension.
+python_name: distributed_jupyter_demo
+repository: https://github.com/QuantStack/distributed-jupyter-demo
+test: false
+
