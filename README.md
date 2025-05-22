@@ -1,77 +1,79 @@
-# distributed_jupyter_demo
+# Distributed Jupyter Kernel Demo
 
 [![Github Actions Status](https://github.com/QuantStack/distributed-jupyter-demo/workflows/Build/badge.svg)](https://github.com/QuantStack/distributed-jupyter-demo/actions/workflows/build.yml)
 
-A JupyterLab extension.
+This project demonstrates a **proof of concept** for using a custom JupyterLab plugin to connect to a **remote Jupyter server's kernel manager** using a shared token. It shows how one JupyterLab frontend (Server B) can start and interact with kernels running on another backend Jupyter server (Server A).
 
-## Requirements
+---
 
-- JupyterLab >= 4.0.0
+## 🧩 What This Demo Does
 
-## Install
+- **Server A** is a Jupyter Server that exposes a kernel manager (with CORS enabled).
+- **Server B** is a JupyterLab instance running a custom **ServiceManagerPlugin**.
+- The plugin in Server B creates its own `KernelManager` that connects to Server A using a shared token and URL.
+- Kernels started from Server B appear and run on Server A.
 
-To install the extension, execute:
+This can be a helpful starting point for building distributed or decoupled architectures in the Jupyter ecosystem (e.g., connecting to remote compute backends, multi-user systems, etc.).
 
-```bash
-pip install distributed_jupyter_demo
-```
+---
 
-## Uninstall
+## 🔧 Local Setup (Without Docker)
 
-To remove the extension, execute:
-
-```bash
-pip uninstall distributed_jupyter_demo
-```
-
-## Contributing
-
-### Development install
-
-Note: You will need NodeJS to build the extension package.
-
-The `jlpm` command is JupyterLab's pinned version of
-[yarn](https://yarnpkg.com/) that is installed with JupyterLab. You may use
-`yarn` or `npm` in lieu of `jlpm` below.
+### 1. Create a Conda/mamba Environment and Install Dependencies
 
 ```bash
-# Clone the repo to your local environment
-# Change directory to the distributed_jupyter_demo directory
-# Install package in development mode
-pip install -e "."
-# Link your development version of the extension with JupyterLab
+conda create -n distributed-jupyter-demo python=3.11 -y
+conda activate distributed-jupyter-demo
+
+pip install -e . && pip install jupyterlab
+jlpm install
 jupyter labextension develop . --overwrite
-# Rebuild extension Typescript source after making changes
-jlpm build
+jupyter lab build
+
 ```
 
-You can watch the source directory and run JupyterLab at the same time in different terminals to watch for changes in the extension's source and automatically rebuild the extension.
+---
+
+### 2. Start the Servers (In Separate Terminals)
+
+**Terminal 1: Server A**
 
 ```bash
-# Watch the source directory in one terminal, automatically rebuilding when needed
-jlpm watch
-# Run JupyterLab in another terminal
-jupyter lab
+jupyter server --port 8888 --ServerApp.token=abc123 --ServerApp.allow_origin='http://localhost:8889'
 ```
 
-With the watch command running, every saved change will immediately be built locally and available in your running JupyterLab. Refresh JupyterLab to load the change in your browser (you may need to wait several seconds for the extension to be rebuilt).
-
-By default, the `jlpm build` command generates the source maps for this extension to make it easier to debug using the browser dev tools. To also generate source maps for the JupyterLab core extensions, you can run the following command:
+**Terminal 2: Server B**
 
 ```bash
-jupyter lab build --minimize=False
+jupyter lab --port 8889 --ServerApp.token=abc123
 ```
 
-### Development uninstall
+Then open your browser at **http://localhost:8889/lab**. The kernel plugin will automatically start a kernel on Server A.
+
+You can confirm the kernel was created by checking **http://localhost:8888/api/kernels**.
+
+## 🐳 Run with Docker
+
+This project comes with a ready-to-use Docker and Docker Compose setup.
+You will need to have **Docker** installed in your system.
+
+### 1. Build and Start the Servers
 
 ```bash
-pip uninstall distributed_jupyter_demo
+docker compose up --build
 ```
 
-In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
-command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `distributed-jupyter-demo` within that folder.
+This launches:
 
-### Packaging the extension
+- **http://localhost:8888** → Server A (backend kernel server)
+- **http://localhost:8889** → Server B (JupyterLab frontend with plugin)
 
-See [RELEASE](RELEASE.md)
+After going to **http://localhost:8889/lab**, Server B will start a kernel on Server A when loaded and you can see it in **http://localhost:8888/api/kernels**.
+
+## 💡 Notes
+
+This demo uses a shared token (abc123) to authenticate both servers. In production, proper security measures must be taken.
+
+CORS is enabled on Server A to allow requests from Server B.
+
+This setup assumes both servers are running on the same host, but the architecture can be adapted for different machines or containers.

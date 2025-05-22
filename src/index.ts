@@ -6,15 +6,6 @@ import {
   ServiceManagerPlugin
 } from '@jupyterlab/services';
 
-/*class CustomKernelManager extends KernelManager {
-  async startNew(
-    options: Partial<Pick<Kernel.IModel, 'name'>> | undefined
-  ): Promise<Kernel.IKernelConnection> {
-    console.log('CustomKernelManager.startNew called with', options);
-    return super.startNew(options);
-  }
-}*/
-
 const kernelPlugin: ServiceManagerPlugin<Kernel.IManager> = {
   id: 'distributed-jupyter-demo:plugin',
   description: 'A JupyterLab extension providing a kernel manager',
