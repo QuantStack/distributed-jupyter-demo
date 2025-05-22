@@ -4,6 +4,8 @@
 
 This project demonstrates a **proof of concept** for using a custom JupyterLab plugin to connect to a **remote Jupyter server's kernel manager** using a shared token. It shows how one JupyterLab frontend (Server B) can start and interact with kernels running on another backend Jupyter server (Server A).
 
+![Demo](demo.gif)
+
 ---
 
 ## 🧩 What This Demo Does
@@ -52,6 +54,8 @@ Then open your browser at **http://localhost:8889/lab**. The kernel plugin will 
 
 You can confirm the kernel was created by checking **http://localhost:8888/api/kernels**.
 
+💡 If prompted for a token in the browser, enter: abc123
+
 ## 🐳 Run with Docker
 
 This project comes with a ready-to-use Docker and Docker Compose setup.
@@ -67,6 +71,8 @@ This launches:
 
 - **http://localhost:8888** → Server A (backend kernel server)
 - **http://localhost:8889** → Server B (JupyterLab frontend with plugin)
+
+💡 If prompted for a token in the browser, enter: abc123
 
 After going to **http://localhost:8889/lab**, Server B will start a kernel on Server A when loaded and you can see it in **http://localhost:8888/api/kernels**.
 
