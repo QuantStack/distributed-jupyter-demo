@@ -54,7 +54,7 @@ Then open your browser at **http://localhost:8889/lab**. The kernel plugin will 
 
 You can confirm the kernel was created by checking **http://localhost:8888/api/kernels**.
 
-💡 If prompted for a token in the browser, enter: abc123
+💡 If prompted for a token in the browser, enter: abc123 or add **?token=abc123**.
 
 ## 🐳 Run with Docker
 
@@ -72,7 +72,7 @@ This launches:
 - **http://localhost:8888** → Server A (backend kernel server)
 - **http://localhost:8889** → Server B (JupyterLab frontend with plugin)
 
-💡 If prompted for a token in the browser, enter: abc123
+💡 If prompted for a token in the browser, enter: abc123 or add **?token=abc123**.
 
 After going to **http://localhost:8889/lab**, Server B will start a kernel on Server A when loaded and you can see it in **http://localhost:8888/api/kernels**.
 
