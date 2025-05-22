@@ -4,6 +4,8 @@
 
 This project demonstrates a **proof of concept** for using a custom JupyterLab plugin to connect to a **remote Jupyter server's kernel manager** using a shared token. It shows how one JupyterLab frontend (Server B) can start and interact with kernels running on another backend Jupyter server (Server A).
 
+![Demo](demo.gif)
+
 ---
 
 ## 🧩 What This Demo Does
